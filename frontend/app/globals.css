@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand: #b8182f;
+  --color-brand-dark: #8f1027;
+  --color-brand-soft: #f7e7d8;
+  --color-gold: #c9902c;
+  --color-ink: #2b0d10;
+  --color-ink-soft: #8f7a6c;
+  --color-canvas: #fbf6ea;
+  --font-sans: var(--font-jakarta);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: #efe6d6;
+  color: var(--color-ink);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+}
+
+/* ---------- Surfaces ---------- */
+/* White cards: a hairline edge plus a soft, warm two-layer shadow. */
+.card {
+  box-shadow:
+    0 0 0 1px rgba(23, 19, 15, 0.04),
+    0 1px 2px rgba(23, 19, 15, 0.04),
+    0 12px 28px -14px rgba(90, 30, 25, 0.22);
+}
+
+/* Primary buttons: brand gradient, top highlight and a coloured glow. */
+.btn-glow {
+  background-image: linear-gradient(180deg, #d42a44 0%, #b8182f 55%, #98112a 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 1px 2px rgba(111, 12, 30, 0.45),
+    0 12px 24px -8px rgba(184, 24, 47, 0.5);
+}
+
+/* Big cherry-red headers (welcome, login, profile). */
+.bg-brand-hero {
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(255, 196, 86, 0.5), transparent 55%),
+    radial-gradient(90% 70% at 0% 100%, rgba(50, 4, 14, 0.55), transparent 60%),
+    linear-gradient(160deg, #cf2440 0%, #a8152d 50%, #6f0c1e 100%);
+}
+
+/* Dark feature cards (promo, live order, cart bar). */
+.bg-ink-hero {
+  background:
+    radial-gradient(90% 120% at 100% 0%, rgba(207, 36, 64, 0.75), transparent 55%),
+    linear-gradient(135deg, #2b0d10 0%, #4a111b 100%);
+}
+
+/* A glossy highlight laid over food "photo" tiles. */
+.tile-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 60% at 25% 0%, rgba(255, 255, 255, 0.38), transparent 60%),
+    radial-gradient(60% 60% at 90% 110%, rgba(0, 0, 0, 0.22), transparent 60%);
+  pointer-events: none;
+}
+
+/* ---------- Splash ----------
+   Opening screen with the logo. Everything is timed in CSS: the logo animates
+   in, a bar fills, then the whole screen fades away at 1.9s and stops blocking
+   taps. position:fixed fills the phone screen (or the desktop phone frame). */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: splash-out 0.5s ease-in 1.9s forwards;
+}
+.splash-ring {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  animation: splash-ring 1.6s ease-out both;
+}
+.splash-mark { position: relative; animation: splash-pop 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+.splash-mark .logo-dot { transform-box: fill-box; transform-origin: center; animation: splash-dot 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) 0.45s both; }
+.splash-word { position: relative; animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.45s both; }
+.splash-tag { position: relative; animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.65s both; }
+.splash-bar {
+  position: absolute;
+  bottom: calc(56px + var(--safe-bottom));
+  width: 96px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  overflow: hidden;
+}
+.splash-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #e0a83a;
+  transform-origin: left;
+  animation: splash-fill 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+}
+@keyframes splash-pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes splash-dot { from { opacity: 0; transform: translateY(-26px) scale(0.4); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes splash-ring { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+@keyframes splash-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes splash-out { to { opacity: 0; transform: scale(1.06); visibility: hidden; pointer-events: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .splash-ring, .splash-mark, .splash-mark .logo-dot, .splash-word, .splash-tag, .splash-bar span { animation: none; }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+}
+.animate-floaty {
+  animation: floaty 4s ease-in-out infinite;
+}
+
+/* ---------- Phone frame ----------
+   On a real phone the app fills the screen and uses the device's safe areas.
+   On a tablet or computer it's shown inside a phone-shaped frame so it looks
+   and scrolls like the mobile app. */
+:root {
+  --app-h: 100dvh;
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+
+.app-stage { min-height: 100dvh; }
+.app-frame { position: relative; margin: 0 auto; max-width: 28rem; background: var(--color-canvas); }
+.app-statusbar, .app-island, .app-home-indicator { display: none; }
+
+/* Any device with a mouse (laptops, desktops) gets the iPhone frame, at any window
+   size. Touch devices - real phones and tablets - get the full-screen app. */
+@media (hover: hover) and (pointer: fine) {
+  :root {
+    --app-h: min(844px, calc(100dvh - 40px));
+    --safe-top: 48px;
+    --safe-bottom: 22px;
+  }
+
+  .app-stage {
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(184, 24, 47, 0.16), transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(255, 200, 60, 0.2), transparent 40%),
+      #efe6d6;
+  }
+
+  .app-frame {
+    width: min(390px, calc(100vw - 40px));
+    max-width: none;
+    height: var(--app-h);
+    border-radius: 54px;
+    /* The bezel: a dark ring plus a thin metallic edge. */
+    box-shadow:
+      0 0 0 11px #121212,
+      0 0 0 13px #3a3a3c,
+      0 40px 80px -20px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+    /* Makes position:fixed children (bottom nav, add-to-cart bar) stick to the
+       frame instead of the browser window. */
+    transform: translateZ(0);
+  }
+
+  .app-screen {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+  .app-screen::-webkit-scrollbar { display: none; }
+
+  .app-statusbar {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 50;
+    display: flex;
+    height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 30px 0 34px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-ink);
+    pointer-events: none;
+  }
+  /* Screens with a coloured header mark themselves data-statusbar="light". */
+  .app-frame:has([data-statusbar="light"]) .app-statusbar { color: #fff; }
+
+  .app-island {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    z-index: 51;
+    display: block;
+    width: 120px;
+    height: 34px;
+    translate: -50% 0;
+    border-radius: 999px;
+    background: #000;
+    pointer-events: none;
+  }
+
+  .app-home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    z-index: 51;
+    display: block;
+    width: 134px;
+    height: 5px;
+    translate: -50% 0;
+    border-radius: 999px;
+    background: var(--color-ink);
+    opacity: 0.85;
+    pointer-events: none;
+  }
+}

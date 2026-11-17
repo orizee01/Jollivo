@@ -1,0 +1,9 @@
+{
+  "defaultEnv": "development",
+  "sql-file": true,
+  "development": { "ENV": "DATABASE_URL" },
+  "test": { "ENV": "TEST_DATABASE_URL" },
+  "staging": { "ENV": "DATABASE_URL" },
+  "demo": { "ENV": "DATABASE_URL" },
+  "production": { "ENV": "DATABASE_URL" }
+}
